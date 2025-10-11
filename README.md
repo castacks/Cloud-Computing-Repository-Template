@@ -10,6 +10,7 @@
 ## Usage Guidelines
 
 TLDR: Search for `todo` and update all occurrences to your desired name
+
 Docker and singularity is not a must unless you cannot install some dependencies locally on HPC shell environment due to permission issue
 
 ### Base Repo
@@ -43,7 +44,7 @@ Docker and singularity is not a must unless you cannot install some dependencies
 
 1. To run and test a built image, use [run_docker_container.sh](scripts/run_docker_container.sh) or `docker compose up -d`
 
-   - The service by default will mount the whole repository onto `CODE_FOLDER` inside the container so any modification inside also takes effect outside, which is useful when you use vscode remote extension to develop inside a running container with docker context
+   - The service by default will mount the whole repository onto `CODE_FOLDER` inside the container so any modification inside also takes effect outside, which is useful when you use vscode remote extension to develop inside a running container with remote docker context
 
 1. [push_docker_image.sh](scripts/push_docker_image.sh) to push the multi-arch image to docker hub
 
@@ -69,7 +70,7 @@ Docker and singularity is not a must unless you cannot install some dependencies
 
 1. Submit job by `sbatch jobs/your-cluster/your-job.job` or `jobs/your-cluster/your-job.job`
 
-1. Recommend [turm](https://github.com/kabouzeid/turm) for job monitor, use `turn -u your-slurm-user` after installation
+1. Recommend [turm](https://github.com/kabouzeid/turm) for job monitor, use `turm -u your-slurm-user` after installation
 
 ## Developer Quick Start
 
