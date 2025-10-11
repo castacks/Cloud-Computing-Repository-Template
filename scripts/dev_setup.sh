@@ -15,14 +15,14 @@ echo "Please enter your sudo password:"
 read -rs SUDO_PASSWORD # Use -r to avoid mangling backslashes, -s for silent input
 
 # Keep sudo alive during the script execution
-echo "$SUDO_PASSWORD" | sudo -v -S
+echo "${SUDO_PASSWORD}" | sudo -v -S
 
 # Update package lists
-echo "$SUDO_PASSWORD" | sudo -S apt update
+echo "${SUDO_PASSWORD}" | sudo -S apt update
 
 # Install dependencies
 echo "Installing clang-format clang-tidy python3 python3-pip"
-echo "$SUDO_PASSWORD" | sudo -S apt install -y clang-format clang-tidy libpython3-dev python3-pip
+echo "${SUDO_PASSWORD}" | sudo -S apt install -y clang-format clang-tidy libpython3-dev python3-pip
 
 # Install/uprade pre-commit
 echo "Installing/upgrading pre-commit"
@@ -32,7 +32,7 @@ pip3 install --upgrade pre-commit
 DEFAULT_SHELL=$(basename "$SHELL")
 
 # Determine the shell configuration file
-case "$DEFAULT_SHELL" in
+case "${DEFAULT_SHELL}" in
 bash)
 	SHELL_RC="${HOME}/.bashrc"
 	;;
@@ -46,24 +46,24 @@ ksh)
 	SHELL_RC="${HOME}/.kshrc"
 	;;
 *)
-	echo "Unsupported shell: $DEFAULT_SHELL"
+	echo "Unsupported shell: ${DEFAULT_SHELL}"
 	exit 1
 	;;
 esac
 
 # Add pre-commit executable to PATH if not already present
-if ! grep -q 'export PATH=~/.local/bin:$PATH' "$SHELL_RC"; then
-	echo "Adding pre-commit (actually python3-pip packages') executable to path in $SHELL_RC"
-	echo 'export PATH=~/.local/bin:$PATH' >>"$SHELL_RC"
+if ! grep -q 'export PATH=~/.local/bin:${PATH}' "${SHELL_RC}"; then
+	echo "Adding pre-commit (actually python3-pip packages') executable to path in ${SHELL_RC}"
+	echo 'export PATH=~/.local/bin:${PATH}' >>"${SHELL_RC}"
 	# Source the .zshrc file using zsh
-	if [ "$DEFAULT_SHELL" = "zsh" ]; then
-		zsh -c "source $SHELL_RC"
+	if [ "${DEFAULT_SHELL}" = "zsh" ]; then
+		zsh -c "source ${SHELL_RC}"
 	else
 		# shellcheck source=/dev/null
-		. "$SHELL_RC"
+		. "${SHELL_RC}"
 	fi
 else
-	echo "PATH already updated in $SHELL_RC"
+	echo "PATH already updated in ${SHELL_RC}"
 fi
 
 # Perform pre-installation of pre-commit hooks and dry run on all files

@@ -1,14 +1,14 @@
 # Do not add --platform=linux/blabla since this is intended for multiplatform builds
 FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
-ENV HOME=$HOME_FOLDER
-WORKDIR $HOME_FOLDER/
+ENV HOME=${HOME_FOLDER}
+WORKDIR ${HOME_FOLDER}/
 
 # Fix apt install stuck problem
 ENV DEBIAN_FRONTEND=noninteractive
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 
 # Copy home folder config
-COPY --from=home-folder-config . $HOME_FOLDER/
+COPY --from=home-folder-config . ${HOME_FOLDER}/
 
 # Remove cuda source list
 # E: Failed to fetch https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/Packages.gz File has unexpected size (853674 != 833365). Mirror sync in progress? [IP: 23.58.157.10 443]
@@ -68,7 +68,7 @@ RUN wget https://apt-get.kitware.com/kitware-archive.sh -O- | sh -s && \
 
 # # Add a new group and user
 # RUN addgroup --gid 1000 $USER && \
-#     adduser --uid 1000 --ingroup $USER --home $HOME_FOLDER --shell /bin/zsh --disabled-password --gecos "" $USER && \
+#     adduser --uid 1000 --ingroup $USER --home ${HOME_FOLDER} --shell /bin/zsh --disabled-password --gecos "" $USER && \
 #     echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # # Fix UID/GID when mounting from host using this: https://github.com/boxboat/fixuid
@@ -84,12 +84,12 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/latest/do
     -p https://github.com/zsh-users/zsh-autosuggestions \
     -p https://github.com/zsh-users/zsh-completions \
     -p https://github.com/zsh-users/zsh-syntax-highlighting \
-    -a "[[ ! -f $HOME_FOLDER/.p10k.zsh ]] || source $HOME_FOLDER/.p10k.zsh" \
+    -a "[[ ! -f ${HOME_FOLDER}/.p10k.zsh ]] || source ${HOME_FOLDER}/.p10k.zsh" \
     -a "POWERLEVEL9K_DISABLE_GITSTATUS=true" \
     -a "bindkey -M emacs '^[[3;5~' kill-word" \
     -a "bindkey '^H' backward-kill-word" \
     -a "autoload -U compinit && compinit" \
-    -a "export PATH=~/.local/bin:$PATH"
+    -a "export PATH=~/.local/bin:${PATH}"
 
 # change default shell for the $USER in the image building process for extra environment safety
 RUN chsh -s $(which zsh)
@@ -103,7 +103,7 @@ RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-$(uname -m
     rm ~/miniconda.sh
 
 # Add conda to PATH
-ENV PATH=$PATH:/opt/conda/bin
+ENV PATH=${PATH}:/opt/conda/bin
 
 # Init conda for zsh
 RUN conda init zsh
@@ -113,12 +113,12 @@ RUN conda init zsh
 # ENV OPENCV_VERSION=4.2.0
 # RUN pip3 uninstall -y opencv && \
 #     apt install -y --no-install-recommends libavcodec-dev libavformat-dev libswscale-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev libgtk-3-dev libpng-dev libjpeg-dev && \
-#     git clone --depth 1 --recursive https://github.com/opencv/opencv.git $HOME_FOLDER/opencv -b $OPENCV_VERSION && \
+#     git clone --depth 1 --recursive https://github.com/opencv/opencv.git ${HOME_FOLDER}/opencv -b $OPENCV_VERSION && \
 #     #  follow the error information，replace all the “ipcp-unit-growth” with “ipa-cp-unit-growth” in 3rdparty/carotene/CMakeLists.txt and 3rdparty/carotene/hal/CMakeLists.txt
-#     perl -pi -e 's/ipcp-unit-growth/ipa-cp-unit-growth/g' $HOME_FOLDER/opencv/3rdparty/carotene/CMakeLists.txt $HOME_FOLDER/opencv/3rdparty/carotene/hal/CMakeLists.txt && \
-#     git clone --depth 1 --recursive https://github.com/opencv/opencv_contrib.git $HOME_FOLDER/opencv_contrib -b $OPENCV_VERSION && \
-#     mkdir -p $HOME_FOLDER/opencv/build && \
-#     cd $HOME_FOLDER/opencv/build && \
+#     perl -pi -e 's/ipcp-unit-growth/ipa-cp-unit-growth/g' ${HOME_FOLDER}/opencv/3rdparty/carotene/CMakeLists.txt ${HOME_FOLDER}/opencv/3rdparty/carotene/hal/CMakeLists.txt && \
+#     git clone --depth 1 --recursive https://github.com/opencv/opencv_contrib.git ${HOME_FOLDER}/opencv_contrib -b $OPENCV_VERSION && \
+#     mkdir -p ${HOME_FOLDER}/opencv/build && \
+#     cd ${HOME_FOLDER}/opencv/build && \
 #     cmake \
 #     -D CMAKE_CXX_STANDARD=20 \
 #     -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
@@ -142,8 +142,8 @@ RUN conda init zsh
 #     make install -j$(($(nproc)-1)) && \
 #     echo "export OpenCV_DIR=/usr/local/lib/cmake/opencv4/" >> ${HOME_FOLDER}/.zshrc && \
 #     echo "export OpenCV_DIR=/usr/local/lib/cmake/opencv4/" >> ${HOME_FOLDER}/.bashrc && \
-#     rm -rf $HOME_FOLDER/opencv && \
-#     rm -rf $HOME_FOLDER/opencv_contrib
+#     rm -rf ${HOME_FOLDER}/opencv && \
+#     rm -rf ${HOME_FOLDER}/opencv_contrib
 
 # Add git safe directory
 RUN git config --global --add safe.directory "*"
@@ -156,16 +156,16 @@ RUN apt full-upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 # change owner of home folder
-RUN chown -R $IMAGE_USER:$IMAGE_USER $HOME_FOLDER
+RUN chown -R ${IMAGE_USER}:${IMAGE_USER} ${HOME_FOLDER}
 
 # change user
-USER $IMAGE_USER
+USER ${IMAGE_USER}
 
 # Set the default shell to zsh
 SHELL [ "/bin/zsh", "-c" ]
 
 # # move fixuid config
-# RUN mv $HOME_FOLDER/fixuid-config.yml /etc/fixuid/config.yml
+# RUN mv ${HOME_FOLDER}/fixuid-config.yml /etc/fixuid/config.yml
 
 # Entrypoint command
 # ENTRYPOINT [ "/bin/sh" , "-c", "fixuid; /bin/zsh" ]

@@ -38,11 +38,13 @@ export IMAGE_NAME
 export IMAGE_TAG
 
 export CONTAINER_NAME
-export CONTAINER_HOME_FOLDER
+export IMAGE_USER
+export HOME_FOLDER
 export CODE_FOLDER
 
 export HOST_UID
 export HOST_GID
+export HOST
 export HOSTNAME
 
 export BUILDER

@@ -354,3 +354,6 @@ AMENT_IGNORE
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,c++,python,jupyternotebooks,ros,ros2,matlab,git
+
+# Singularity images
+*.sif

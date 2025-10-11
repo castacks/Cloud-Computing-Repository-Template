@@ -56,6 +56,6 @@ echo "----------------------------------------"
 cat "${tmp_dockerfile}"
 echo "----------------------------------------"
 
-# docker push "$DOCKER_USER"/"$IMAGE_NAME":"$IMAGE_TAG"
+# docker push "${DOCKER_USER}"/"${IMAGE_NAME}":"${IMAGE_TAG}"
 
 docker buildx bake --file "$(dirname "$0")"/../docker-compose.yml --push --set "*.dockerfile=${tmp_dockerfile}"

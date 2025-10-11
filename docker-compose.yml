@@ -1,7 +1,5 @@
-version: "3"
-
 services:
-    default:
+    todo-service-name:
         build:
             dockerfile: ./docker/${IMAGE_TAG}/Dockerfile
             x-bake:
@@ -17,7 +15,8 @@ services:
         pull_policy: missing
         container_name: ${CONTAINER_NAME}
         privileged: true
-        hostname: ${HOSTNAME}
+        user: root
+        hostname: ${HOST}
         network_mode: host
         ipc: host
         pid: host
@@ -34,8 +33,8 @@ services:
             - /var/lib/systemd/coredump/:/cores
             - /tmp/.X11-unix/:/tmp/.X11-unix/:rw
             - ${XAUTH}:${XAUTH}
-            - .:${CONTAINER_HOME_FOLDER}/${CODE_FOLDER}
-        working_dir: ${CONTAINER_HOME_FOLDER}/${CODE_FOLDER}
+            - .:${HOME_FOLDER}/${CODE_FOLDER}
+        working_dir: ${HOME_FOLDER}/${CODE_FOLDER}
         stdin_open: true # for -it
         tty: true # for -it
         # command: /bin/zsh

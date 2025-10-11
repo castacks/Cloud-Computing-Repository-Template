@@ -10,6 +10,6 @@
 
 . "$(dirname "$0")"/variables.sh
 
-docker exec --privileged -it "$CONTAINER_NAME" pkill -f zsh
+docker exec --privileged -it "${CONTAINER_NAME}" pkill -f zsh
 
-docker rm -f "$CONTAINER_NAME"
+docker rm -f "${CONTAINER_NAME}"

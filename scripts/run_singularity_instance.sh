@@ -12,9 +12,9 @@ set -euo pipefail
 . "$(dirname "$0")/variables.sh"
 
 # Check if an instance with that name exists (skip the header line)
-if singularity instance list | awk 'NR>1 {print $1}' | grep -xq "$CONTAINER_NAME"; then
-	echo "An instance named ""$CONTAINER_NAME"" is running, stopping it…"
-	singularity instance stop "$CONTAINER_NAME"
+if singularity instance list | awk 'NR>1 {print $1}' | grep -xq "${CONTAINER_NAME}"; then
+	echo "An instance named ""${CONTAINER_NAME}"" is running, stopping it…"
+	singularity instance stop "${CONTAINER_NAME}"
 	echo "Done"
 fi
 
@@ -27,7 +27,7 @@ singularity instance start \
 	--no-init \
 	--writable-tmpfs \
 	--hostname "$(hostname)" \
-	--bind "$BASE_DIR":"$HOME_FOLDER"/"$CODE_FOLDER" \
+	--bind "${BASE_DIR}":"${HOME_FOLDER}"/"${CODE_FOLDER}" \
 	--bind /var/lib/systemd/coredump/:/cores \
 	"$(dirname "$0")/../${IMAGE_NAME}_${IMAGE_TAG}.sif" \
 	"${CONTAINER_NAME}"

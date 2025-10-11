@@ -10,4 +10,4 @@
 
 . "$(dirname "$0")"/variables.sh
 
-docker pull "$DOCKER_USER"/"$IMAGE_NAME":"$IMAGE_TAG"
+docker pull "${DOCKER_USER}"/"${IMAGE_NAME}":"${IMAGE_TAG}"

@@ -11,4 +11,4 @@
 set -euo pipefail
 . "$(dirname "$0")"/variables.sh
 
-singularity instance stop "$CONTAINER_NAME"
+singularity instance stop "${CONTAINER_NAME}"
