@@ -37,7 +37,7 @@ diff_env="$(
 diff_env="${diff_env# }" # trim leading space
 
 # Check if the builder already exists
-if ! docker buildx ls | grep -q "^${BUILDER} "; then
+if ! docker buildx inspect "${BUILDER}" &>/dev/null; then
 	echo "Creating Docker Buildx builder '${BUILDER}'..."
 	docker buildx create \
 		--name "${BUILDER}" \
