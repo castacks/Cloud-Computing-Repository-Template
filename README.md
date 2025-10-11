@@ -23,11 +23,11 @@ Docker and singularity is not a must unless you cannot install some dependencies
 
 ### Docker Config
 
-1. Modify `DOCKER_USER`, `IMAGE_NAME`, `IMAGE_USER` in [.env](.env)
+1. Modify `todo-docker-user`, `todo-image-name`, `todo-image-user` in [.env](.env)
 
    - [.env](env) will be loaded when you use docker compose for build/run/push/...
-   - `DOCKER_USER` refers to your docker hub account username
-   - `IMAGE_USER` refers to the default user inside the image, which is used to determine home folder
+   - `todo-docker-user` refers to your docker hub account username
+   - `todo-image-user` refers to the default user inside the image, which is used to determine home folder
 
 1. Modify the service name from `default` to your service name in [docker-compose.yml](docker-compose.yml), add additional volume mounting options such as dataset directories
 
@@ -59,7 +59,7 @@ Docker and singularity is not a must unless you cannot install some dependencies
 1. [run_singularity_instance.sh](scripts/run_singularity_instance.sh) to test the image
 
    - Add additional volume binding options to the script such as dataset directories, best practice is to define in [.env](.env) then export in [variables.sh](scripts/variables.sh) with `resolve_host_path` to turn relative path into absolute real path
-   - Singularity instances by default has less environment separation than docker containers unless you specify the additional options like the script
+   - Singularity instances by default has less environment isolation than docker containers unless you specify the additional options like the script
 
 ### Job Config
 
