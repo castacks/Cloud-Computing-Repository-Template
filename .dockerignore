@@ -1,0 +1,8 @@
+# Applies to build only, ignore everything by default
+**
+
+# Keep only files needed for build
+!environment.yml
+!pyproject.toml
+!docker/
+!docker-compose.yml

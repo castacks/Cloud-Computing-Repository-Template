@@ -8,6 +8,25 @@
 # Copyright Ⓒ 2024 Mukai (Tom Notch) Yu
 #
 
+resolve_host_path() {
+	local p="$1"
+	[ -n "$p" ] || {
+		echo ""
+		return 0
+	}
+
+	if command -v realpath >/dev/null 2>&1; then
+		realpath -m -- "$p" 2>/dev/null || echo "$p"
+	elif readlink -f / >/dev/null 2>&1; then
+		readlink -f -- "$p" 2>/dev/null || echo "$p"
+	else
+		python3 - "$p" <<'PY' 2>/dev/null || echo "$p"
+import os, sys
+print(os.path.realpath(sys.argv[1]))
+PY
+	fi
+}
+
 . "$(dirname "$0")"/../.env
 
 export XSOCK
@@ -25,3 +44,5 @@ export CODE_FOLDER
 export HOST_UID
 export HOST_GID
 export HOSTNAME
+
+export BUILDER

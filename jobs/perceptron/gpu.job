@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#SBATCH -N 1 # Number of nodes
+#SBATCH -p a100-gpu-shared # partition
+#SBATCH --ntasks-per-node=2 # number of tasks per node
+#SBATCH --gpus-per-task=1 # number of GPUs per task
+#SBATCH --cpus-per-task=16 # number of CPU cores per task
+#SBATCH --mem=100G # CPU RAM
+#SBATCH -t 48:00:00 # time
+#SBATCH -o todo_your_job_name_%j.out
+#SBATCH --job-name todo_your_job_name
+#SBATCH --mail-type END
+#SBATCH --mail-user todo-your-email@your-domain
+
+# echo commands to stdout
+set -x
+
+cd todo-your-code-directory || exit # this directory refers to the absolute path outside any docker/singularity container/instance
+conda activate todo-your-conda-env-name
+srun todo-your-code-entrypoint

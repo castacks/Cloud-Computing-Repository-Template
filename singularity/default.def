@@ -1,0 +1,21 @@
+Bootstrap: docker
+From: ${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+
+%labels
+    Image       ${IMAGE_NAME}:${IMAGE_TAG}
+    Source      docker://${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+
+%environment
+    # ---- Runtime env (applies inside the container at exec/start) ----
+    export HOME="${HOME_FOLDER}"
+    export DEBIAN_FRONTEND=noninteractive
+
+%runscript
+    # Default behavior: pass through to the invoked command
+    exec "$@"
+
+%startscript
+    # When `instance start` runs, ensure HOME is correct and cd to project if present
+    export HOME="${HOME_FOLDER}"
+    cd "${HOME_FOLDER}/${CODE_FOLDER}" 2>/dev/null || cd "${HOME_FOLDER}" || true
+    exec "$@"
