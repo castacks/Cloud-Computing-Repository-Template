@@ -18,8 +18,6 @@ if singularity instance list | awk 'NR>1 {print $1}' | grep -xq "${CONTAINER_NAM
 	echo "Done"
 fi
 
-BASE_DIR="$(cd "$(dirname "$0")"/.. && pwd)"
-
 singularity instance start \
 	--nv \
 	--containall \
@@ -27,7 +25,7 @@ singularity instance start \
 	--no-init \
 	--writable-tmpfs \
 	--hostname "$(hostname)" \
-	--bind "${BASE_DIR}":"${HOME_FOLDER}"/"${CODE_FOLDER}" \
+	--bind "${BASE_FOLDER}":"${HOME_FOLDER}"/"${CODE_FOLDER}" \
 	--bind /var/lib/systemd/coredump/:/cores \
 	"$(dirname "$0")/../${IMAGE_NAME}_${IMAGE_TAG}.sif" \
 	"${CONTAINER_NAME}"

@@ -1,7 +1,10 @@
 # Do not add --platform=linux/blabla since this is intended for multiplatform builds
-FROM nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04
+FROM ${BASE_IMAGE}
 ENV HOME=${HOME_FOLDER}
 WORKDIR ${HOME_FOLDER}/
+
+# Make home folder if not exists
+RUN mkdir -p ${HOME_FOLDER}
 
 # Fix apt install stuck problem
 ENV DEBIAN_FRONTEND=noninteractive
@@ -23,8 +26,8 @@ RUN apt update -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepo
 
 # fix local time problem
 RUN apt-get install -y --no-install-recommends tzdata && \
-    ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime && \
-    echo "America/New_York" > /etc/timezone && \
+    ln -fs /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime && \
+    echo "${TIME_ZONE}" > /etc/timezone && \
     dpkg-reconfigure --frontend noninteractive tzdata
 
 # update all obsolete packages to latest, install sudo, and cleanup
@@ -34,7 +37,7 @@ RUN apt update -o Acquire::Check-Valid-Until=false -o Acquire::AllowInsecureRepo
     apt autoremove -y && \
     apt autoclean -y
 
-    # Install some goodies
+# Install some goodies
 RUN apt-get install -y --no-install-recommends \
     build-essential \
     clang-format \
@@ -67,9 +70,9 @@ RUN wget https://apt-get.kitware.com/kitware-archive.sh -O- | sh -s && \
     apt-get autoremove -y
 
 # # Add a new group and user
-# RUN addgroup --gid 1000 $USER && \
-#     adduser --uid 1000 --ingroup $USER --home ${HOME_FOLDER} --shell /bin/zsh --disabled-password --gecos "" $USER && \
-#     echo "$USER ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# RUN addgroup --gid 1000 ${IMAGE_USER} && \
+#     adduser --uid 1000 --ingroup ${IMAGE_USER} --home ${HOME_FOLDER} --shell /bin/zsh --disabled-password --gecos "" ${IMAGE_USER} && \
+#     echo "${IMAGE_USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # # Fix UID/GID when mounting from host using this: https://github.com/boxboat/fixuid
 # RUN curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.6.0/fixuid-0.6.0-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
@@ -91,7 +94,7 @@ RUN sh -c "$(wget -O- https://github.com/deluan/zsh-in-docker/releases/latest/do
     -a "autoload -U compinit && compinit" \
     -a "export PATH=~/.local/bin:${PATH}"
 
-# change default shell for the $USER in the image building process for extra environment safety
+# change default shell for the ${IMAGE_USER} in the image building process for extra environment safety
 RUN chsh -s $(which zsh)
 
 # Use bash -lc for conda commands in build layers

@@ -8,6 +8,8 @@
 # Copyright Ⓒ 2024 Mukai (Tom Notch) Yu
 #
 
+set -euo pipefail
+
 resolve_host_path() {
 	local p="$1"
 	[ -n "$p" ] || {
@@ -27,24 +29,12 @@ PY
 	fi
 }
 
+set -a
+set +u
 . "$(dirname "$0")"/../.env
+set -u
+set +a
 
-export XSOCK
-export XAUTH
-export AVAILABLE_CORES
-
-export DOCKER_USER
-export IMAGE_NAME
-export IMAGE_TAG
-
-export CONTAINER_NAME
-export IMAGE_USER
-export HOME_FOLDER
-export CODE_FOLDER
-
-export HOST_UID
-export HOST_GID
-export HOST
-export HOSTNAME
-
-export BUILDER
+# export additional derived variables below if needed, e.g. resolved absolute paths
+# SOME_PATH="$(resolve_host_path "${SOME_PATH:-}")"
+# export SOME_PATH
