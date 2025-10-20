@@ -1,6 +1,6 @@
 # New Cloud Computing Repository
 
-[![pre-commit](https://github.com/castacks/Cloud-Computing-Repository-Template/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/castacks/Cloud-Computing-Repository-Template/actions/workflows/pre-commit.yml)
+[![pre-commit](https://github.com/castacks/Cloud-Computing-Repository-Template/actions/workflows/pre-commit.yml/badge.svg?branch=main)](https://github.com/castacks/Cloud-Computing-Repository-Template/actions/workflows/pre-commit.yml)
 
 ## Dependencies
 
