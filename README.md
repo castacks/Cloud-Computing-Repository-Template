@@ -27,7 +27,7 @@ Continue on a machine where you have docker permission, HPC clusters usually res
 
 1. Modify `todo-docker-user`, `todo-base-image`, `todo-image-name`, `todo-image-user` in [.env](.env)
 
-   - [.env](env) will be loaded when you use docker compose for build/run/push
+   - [.env](.env) will be loaded when you use docker compose for build/run/push
    - `todo-docker-user` refers to your docker hub account username
    - `todo-base-image` is the image dockerfile is based on, such as `nvidia/cuda:13.0.0-cudnn-devel-ubuntu24.04`
    - `todo-image-user` refers to the default user inside the image, which is used to determine home folder
@@ -47,7 +47,7 @@ Continue on a machine where you have docker permission, HPC clusters usually res
 1. [run_docker_container.sh](scripts/run_docker_container.sh) or `docker compose up -d` to run and test a built image
 
    - The service by default will mount the whole repository onto `CODE_FOLDER` inside the container so any modification inside also takes effect outside, which is useful when you use vscode remote extension to develop inside a running container with remote docker context
-   - You should be able to run and see GUI applications inside the container if `$DISPLAY` is set correctly when you run the script
+   - You should be able to run and see GUI applications inside the container if `DISPLAY` is set correctly when you run the script
 
 1. [push_docker_image.sh](scripts/push_docker_image.sh) to push the multi-arch image to docker hub
 

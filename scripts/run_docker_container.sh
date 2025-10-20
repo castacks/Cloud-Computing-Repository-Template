@@ -14,7 +14,7 @@ xhost +local:*
 
 if [ ! -f "${XAUTH}" ]; then
 	touch "${XAUTH}"
-	xauth_list=$(xauth nlist "$DISPLAY" | sed -e 's/^..../ffff/')
+	xauth_list=$(xauth nlist "${DISPLAY}" | sed -e 's/^..../ffff/')
 	if [ -n "${xauth_list}" ]; then
 		echo "${xauth_list}" | xauth -f "${XAUTH}" nmerge -
 	fi
@@ -31,7 +31,8 @@ docker run \
 	--name "${CONTAINER_NAME}" \
 	--hostname "$(hostname)" \
 	--privileged \
-	--cpus "$AVAILABLE_CORES" \
+	--cpus "${AVAILABLE_CORES}" \
+	--user root \
 	--network host \
 	--ipc host \
 	--pid host \
@@ -39,7 +40,7 @@ docker run \
 	--group-add audio \
 	--group-add video \
 	--volume=":" \
-	-e DISPLAY="$DISPLAY" \
+	-e DISPLAY="${DISPLAY}" \
 	-e XAUTHORITY="${XAUTH}" \
 	-e QT_X11_NO_MITSHM=1 \
 	-v /var/lib/systemd/coredump/:/cores \

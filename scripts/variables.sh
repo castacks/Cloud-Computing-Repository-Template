@@ -38,3 +38,5 @@ set +a
 # export additional derived variables below if needed, e.g. resolved absolute paths
 # SOME_PATH="$(resolve_host_path "${SOME_PATH:-}")"
 # export SOME_PATH
+BASE_FOLDER="$(resolve_host_path "$(dirname "$0")"/..)"
+export BASE_FOLDER
