@@ -17,5 +17,5 @@ set -x
 
 cd todo-your-code-directory || exit # this directory refers to the absolute path outside any docker/singularity container/instance
 scripts/run_singularity_instance.sh
-source scripts/variables.sh
-srun singularity exec instance://"${CONTAINER_NAME}" zsh -c "source ~/.zshrc && conda run -n todo-your-conda-env-name todo-your-code-entrypoint"
+source .env
+srun -u singularity exec --pwd "${HOME_FOLDER}/${CODE_FOLDER}" instance://"${CONTAINER_NAME}" zsh -c "source ~/.zshrc && conda run -n todo-your-conda-env-name todo-your-code-entrypoint"
