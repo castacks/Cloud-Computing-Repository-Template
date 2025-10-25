@@ -10,31 +10,9 @@
 
 set -euo pipefail
 
-before_env="$(mktemp)"
-after_env="$(mktemp)"
-tmp_dockerfile="$(mktemp)"
-cleanup() { rm -f "${before_env}" "${after_env}" "${tmp_dockerfile}"; }
-trap cleanup EXIT
-
-env | sort >"${before_env}"
-
 set -a
 . "$(dirname "$0")"/variables.sh
 set +a
-
-env | sort >"${after_env}"
-
-diff_env="$(
-	awk -F= '
-    NR==FNR { before[$1]=$0; next }
-    {
-      name=$1
-      if (!(name in before) || before[name] != $0)
-        printf " ${%s}", name
-    }
-  ' "${before_env}" "${after_env}"
-)"
-diff_env="${diff_env# }" # trim leading space
 
 # Determine the local platform
 if [[ "$(uname -m)" == "x86_64" ]]; then
@@ -58,13 +36,5 @@ else
 	docker buildx use "${BUILDER}"
 fi
 
-# environment variable substitution trick
-envsubst "${diff_env}" <"$(dirname "$0")/../docker/${IMAGE_TAG}/Dockerfile" >"${tmp_dockerfile}"
-
-echo ">>> Substituted dockerfile:"
-echo "----------------------------------------"
-cat "${tmp_dockerfile}"
-echo "----------------------------------------"
-
 # Build the Docker image for only the local platform, push.sh will push multi-platform version
-docker buildx bake --file "$(dirname "$0")"/../docker-compose.yml --load --set "*.platform=${LOCAL_PLATFORM}" --set "*.dockerfile=${tmp_dockerfile}"
+docker buildx bake --file "$(dirname "$0")"/../docker-compose.yml --load --set "*.platform=${LOCAL_PLATFORM}"

@@ -1,21 +1,19 @@
 Bootstrap: docker
-From: ${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+From: {{DOCKER_USER}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
 
 %labels
-    Image       ${IMAGE_NAME}:${IMAGE_TAG}
-    Source      docker://${DOCKER_USER}/${IMAGE_NAME}:${IMAGE_TAG}
+    Image       {{IMAGE_NAME}}:{{IMAGE_TAG}}
+    Source      docker://{{DOCKER_USER}}/{{IMAGE_NAME}}:{{IMAGE_TAG}}
 
 %environment
-    # ---- Runtime env (applies inside the container at exec/start) ----
-    export HOME="${HOME_FOLDER}"
-    export DEBIAN_FRONTEND=noninteractive
+    # ---- Runtime env (applies inside the instance at start/exec) ----
+    export HOME={{HOME_FOLDER}}
 
 %runscript
-    # Default behavior: pass through to the invoked command
-    exec "$@"
+    # works only when starting with 'singularity run ...'
+    # Source zshrc if it exists
+    [ -f ~/.zshrc ] && source ~/.zshrc
 
-%startscript
-    # When `instance start` runs, ensure HOME is correct and cd to project if present
-    export HOME="${HOME_FOLDER}"
-    cd "${HOME_FOLDER}/${CODE_FOLDER}" 2>/dev/null || cd "${HOME_FOLDER}" || true
+    cd "{{HOME_FOLDER}}/{{CODE_FOLDER}}" 2>/dev/null || cd "{{HOME_FOLDER}}" || true
+
     exec "$@"
