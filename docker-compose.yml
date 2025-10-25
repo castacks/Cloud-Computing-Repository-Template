@@ -2,6 +2,11 @@ services:
     todo-service-name:
         build:
             dockerfile: ./docker/${IMAGE_TAG}/Dockerfile
+            args:
+                BASE_IMAGE: ${BASE_IMAGE}
+                IMAGE_USER: ${IMAGE_USER}
+                HOME_FOLDER: ${HOME_FOLDER}
+                TIME_ZONE: ${TIME_ZONE}
             x-bake:
                 contexts:
                     home-folder-config: ./docker/build-context/home-folder-config

@@ -1,5 +1,11 @@
 # Do not add --platform=linux/blabla since this is intended for multiplatform builds
+ARG BASE_IMAGE=ubuntu
 FROM ${BASE_IMAGE}
+
+ARG IMAGE_USER
+ARG HOME_FOLDER
+ARG TIME_ZONE
+
 ENV HOME=${HOME_FOLDER}
 WORKDIR ${HOME_FOLDER}/
 
@@ -106,7 +112,7 @@ RUN wget "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-$(uname -m
     rm ~/miniconda.sh
 
 # Add conda to PATH
-ENV PATH=${PATH}:/opt/conda/bin
+ENV PATH=/opt/conda/bin:${PATH}
 
 # Init conda for zsh
 RUN conda init zsh
